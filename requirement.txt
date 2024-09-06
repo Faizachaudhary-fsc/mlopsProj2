@@ -1,7 +1,11 @@
 scikit-learn
-sklearn
-pandas
 joblib
-streamlit
-tensorflow
+streamlit 
 numpy
+pandas
+sklearn.model_selection
+sklearn.metrics 
+sklearn.datasets 
+tensorflow.keras.utils 
+tensorflow.keras.models 
+tensorflow.keras.layers 
