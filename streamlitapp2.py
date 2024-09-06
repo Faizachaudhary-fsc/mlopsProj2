@@ -22,21 +22,11 @@ y = digits.target
 # One-hot encode the labels
 y = to_categorical(y)
 
-# Neural network model architecture
-def create_model():
-    model = Sequential()
-    model.add(Dense(12, activation='relu', input_shape=(X.shape[1],)))
-    model.add(Dense(8, activation='relu'))
-    model.add(Dense(10, activation='softmax'))  # 10 output classes for digits 0-9
-    return model
 
 # Compile and train the model
 model = create_model()
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-# Train the model on the entire dataset
-with st.spinner('Training the model...'):
-    model.fit(X, y, epochs=500, batch_size=10, verbose=0)
 
 st.success("Model trained successfully!")
 
