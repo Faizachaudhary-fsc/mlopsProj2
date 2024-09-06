@@ -1,8 +1,9 @@
-# Importing libraries# Importing libraries
 import streamlit as st
 import numpy as np
 import pandas as pd
 import joblib
+from PIL import Image  # For image processing
+import cv2  # OpenCV for image preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 from sklearn.datasets import load_digits
@@ -14,7 +15,7 @@ from tensorflow.keras.layers import Dense
 st.title("Digit Classification with Neural Networks")
 st.write("""
 This app trains a neural network model on the digits dataset using TensorFlow and scikit-learn. 
-It classifies digits (0-9) and reports model accuracy.
+It classifies digits (0-9) and reports model accuracy. You can also upload an image of a digit to get a prediction.
 """)
 
 # Load dataset
@@ -72,3 +73,27 @@ st.write("### Classification Report")
 report = classification_report(y_true, y_pred, target_names=[str(i) for i in range(10)], output_dict=True)
 report_df = pd.DataFrame(report).transpose()
 st.dataframe(report_df)
+
+# Add file uploader for digit image prediction
+st.write("### Upload a Handwritten Digit Image")
+uploaded_file = st.file_uploader("Choose an image...", type="png")
+
+if uploaded_file is not None:
+    # Preprocess the uploaded image
+    image = Image.open(uploaded_file)
+    st.image(image, caption="Uploaded Image", use_column_width=True)
+
+    # Convert image to grayscale and resize it to 8x8 (same as digits dataset)
+    image = image.convert("L")  # Convert to grayscale
+    image = image.resize((8, 8))  # Resize to 8x8 pixels
+    image = np.array(image)
+
+    # Normalize the image (same preprocessing as in the dataset)
+    image = 16 - (image / 16.0)  # Invert and scale (to match the format of the digits dataset)
+    image = image.reshape(1, -1)  # Reshape to match the input shape for the model
+
+    # Make prediction
+    prediction = model.predict(image)
+    predicted_digit = np.argmax(prediction)
+
+    st.write(f"### Predicted Digit: {predicted_digit}")
