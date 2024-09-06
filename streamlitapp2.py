@@ -36,7 +36,7 @@ model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accur
 
 # Train the model on the entire dataset
 with st.spinner('Training the model...'):
-    model.fit(X, y, epochs=200, batch_size=10, verbose=0)
+    model.fit(X, y, epochs=500, batch_size=10, verbose=0)
 
 st.success("Model trained successfully!")
 
