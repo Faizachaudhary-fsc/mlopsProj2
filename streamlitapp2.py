@@ -1,31 +1,18 @@
 # Importing libraries
 import streamlit as st
 import numpy as np
-import pandas as pd
-import joblib
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
-from sklearn.datasets import load_digits
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.preprocessing.image import img_to_array, load_img
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.image import img_to_array
 from PIL import Image
 
 # App Title
 st.title("Digit Classification with Neural Networks")
 st.write("""
-This app trains a neural network model on the digits dataset using TensorFlow and scikit-learn. 
-It classifies digits (0-9) and predicts the label of an uploaded image.
+Upload an image of a digit (0-9) and the app will predict its label using a pre-trained neural network model.
 """)
 
-# Load dataset
-digits = load_digits()
-X = digits.data
-y = digits.target
-
-
-
+# Load the pre-trained model (Assuming model.h5 is the pre-trained model)
+model = load_model('model.h5')
 
 # Accepting image upload from user
 st.write("### Upload an Image of a Digit (0-9) for Prediction")
