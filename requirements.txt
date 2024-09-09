@@ -3,5 +3,5 @@ scikit-learn
 tensorflow
 numpy
 pandas
-PIL
+pillow
 streamlit
