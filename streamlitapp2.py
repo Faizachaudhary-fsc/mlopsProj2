@@ -1,18 +1,53 @@
 # Importing libraries
-import streamlit as st
+mport streamlit as st
 import numpy as np
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing.image import img_to_array
+import pandas as pd
+import joblib
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+from sklearn.datasets import load_digits
+from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.preprocessing.image import img_to_array, load_img
 from PIL import Image
 
 # App Title
 st.title("Digit Classification with Neural Networks")
 st.write("""
-Upload an image of a digit (0-9) and the app will predict its label using a pre-trained neural network model.
+This app trains a neural network model on the digits dataset using TensorFlow and scikit-learn. 
+It classifies digits (0-9) and predicts the label of an uploaded image.
 """)
 
-# Load the pre-trained model (Assuming model.h5 is the pre-trained model)
-model = load_model('model.h5')
+# Load dataset
+digits = load_digits()
+X = digits.data
+y = digits.target
+
+# One-hot encode the labels
+y = to_categorical(y)
+
+# Neural network model architecture
+def create_model():
+    model = Sequential()
+    model.add(Dense(12, activation='relu', input_shape=(X.shape[1],)))
+    model.add(Dense(8, activation='relu'))
+    model.add(Dense(10, activation='softmax'))  # 10 output classes for digits 0-9
+    return model
+
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Compile and train the model
+model = create_model()
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+# Show a progress bar during training
+with st.spinner('Training the model...'):
+    history = model.fit(X_train, y_train, epochs=200, batch_size=10, verbose=0)
+
+# Step 6: Evaluate the Model
+accuracy = model.evaluate(X_test, y_test)  
 
 # Accepting image upload from user
 st.write("### Upload an Image of a Digit (0-9) for Prediction")
