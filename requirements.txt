@@ -3,6 +3,5 @@ scikit-learn
 tensorflow
 numpy
 pandas
-cv2
 PIL
 streamlit
