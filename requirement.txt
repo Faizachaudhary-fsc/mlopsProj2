@@ -5,3 +5,4 @@ numpy
 pandas
 cv2
 PIL
+streamlit
